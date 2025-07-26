@@ -8,14 +8,17 @@ import { ConfigService } from '@nestjs/config';
       useFactory: async (configService: ConfigService) => {
         const uri = configService.get<string>('MONGODB_URI');
         
-        // For development, use a simple local connection if Atlas fails
-        const fallbackUri = 'mongodb+srv://infowisdomvani:Mbrqp42bMq9Gzpsr@cluster0.sb658f3.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0';
+        if (!uri) {
+          throw new Error('MONGODB_URI environment variable is required');
+        }
         
         return {
-          uri: uri || fallbackUri,
-          // Add connection options to handle connection failures gracefully
-          serverSelectionTimeoutMS: 5000, // 5 seconds timeout
+          uri,
+          // Connection options for production stability
+          serverSelectionTimeoutMS: 10000, // 10 seconds timeout
           socketTimeoutMS: 45000,
+          retryWrites: true,
+          w: 'majority',
         };
       },
       inject: [ConfigService],
