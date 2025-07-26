@@ -114,11 +114,18 @@ Test your deployment:
 ### Build Commands Used:
 ```bash
 # Build Command
-npm ci && npm run build
+./render-build.sh
 
 # Start Command  
 npm run start:prod
 ```
+
+### Files for Render Detection:
+- ✅ `render.yaml` - Explicit Render configuration
+- ✅ `Procfile` - Runtime specification
+- ✅ `.nvmrc` - Node.js version (22)
+- ✅ `render-build.sh` - Custom build script
+- ✅ `package.json` - Node.js project marker
 
 ## 📱 Frontend Connection
 
